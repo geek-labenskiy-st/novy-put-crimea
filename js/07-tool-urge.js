@@ -60,7 +60,6 @@
                 const choices = el.querySelectorAll('.tool-choice');
                 const nextBtn = el.querySelector('[data-act="next"]');
 
-                // FIX: восстанавливаем выбор при возврате на шаг
                 const saved = api.state.data.body;
                 if (saved) {
                     choices.forEach(c => {
@@ -106,7 +105,6 @@
                     started = true;
                     startBtn.disabled = true;
                     startBtn.textContent = 'Идёт наблюдение…';
-                    // FIX: отсчёт по реальному времени, а не по тикам (throttling вкладки)
                     const end = Date.now() + 15000;
                     status.textContent = 'Наблюдайте…';
                     count.textContent = '15 с';

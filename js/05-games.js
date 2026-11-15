@@ -23,7 +23,6 @@
         ]
     };
 
-    // FIX: реестр для сброса «3 клика» при повторном открытии модалки
     const registry = new WeakMap(); // gameEl -> reset()
 
     function renderGame(gameEl) {
@@ -82,7 +81,6 @@
     }
 
     /**
-     * FIX: сброс карусели «3 клика» по её контейнеру.
      * @param {HTMLElement} gameEl
      */
     function resetGame(gameEl) {

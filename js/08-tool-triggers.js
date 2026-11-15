@@ -19,7 +19,6 @@
         { key: 'habit', icon: '🔁', label: 'Привычные места и время (ритуалы)' }
     ];
 
-    // FIX: используем NP.escapeHtml напрямую, локальный алиас не нужен
     const esc = (s) => (window.NP && NP.escapeHtml) ? NP.escapeHtml(s) : String(s);
 
     const steps = [

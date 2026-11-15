@@ -11,7 +11,6 @@
     const registry = new WeakMap(); // gameEl -> { render, steps, onFinish }
 
     /**
-     * Создать пошаговый тренажёр.
      * @param {HTMLElement} gameEl — .game[data-game="tool-*"]
      * @param {Array<{render: Function}>} steps
      * @param {Function} [onFinish]

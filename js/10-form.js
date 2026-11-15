@@ -111,11 +111,9 @@
             const formData = new FormData(form);
             const roleValue = formData.get('role');
             formData.set('role', ROLE_LABELS[roleValue] || roleValue);
-            // FIX: не отправляем служебные поля в письмо
             formData.delete('website');
             formData.delete('captcha');
 
-            // FIX: таймаут запроса, чтобы кнопка не висела вечно
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 10000);
 
@@ -142,7 +140,6 @@
             form.hidden = true;
             if (successMessage) successMessage.hidden = false;
         } catch (err) {
-            // FIX: честный fallback — не притворяемся, что всё отправлено
             const name = (document.getElementById('name') || {}).value || 'Не указано';
             const phoneFormatted = phoneEl.value;
             const roleChecked = document.querySelector('input[name="role"]:checked');

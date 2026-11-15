@@ -15,7 +15,6 @@
                 return;
             }
 
-            // FIX: защита от невалидных селекторов (#!, #: и т.п.)
             let target = null;
             try { target = document.querySelector(href); } catch (_) { return; }
 
@@ -26,7 +25,6 @@
         });
     });
 
-    // FIX: кнопка «Наверх» через делегирование (без inline onclick)
     document.addEventListener('click', (e) => {
         if (e.target.closest('[data-scroll-top]')) {
             e.preventDefault();

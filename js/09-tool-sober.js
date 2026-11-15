@@ -63,7 +63,6 @@
                     { name: 'Задержка', text: 'Задержка', cls: 'is-hold', dur: 2000 },
                     { name: 'Выдох', text: 'Выдох', cls: 'is-exhale', dur: 6000 }
                 ];
-                // FIX: конец текущей фазы по реальному времени
                 let phaseEnd = 0;
 
                 function runPhase() {
@@ -75,7 +74,6 @@
                     phaseEnd = Date.now() + p.dur;
 
                     NP.breathTimer = setTimeout(() => {
-                        // FIX: если вкладка была в фоне — догоняем пропущенные фазы
                         const now = Date.now();
                         if (now < phaseEnd) {
                             // ещё не пора — перезапускаем на остаток

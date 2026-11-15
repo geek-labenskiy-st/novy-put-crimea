@@ -142,7 +142,6 @@
     color: var(--color-text-muted);
 }
 
-/* FIX: мобильные правила модалок перенесены сюда из 07-cards.css */
 @media (max-width: 480px) {
     .modal[open] {
         padding: var(--space-xs);

@@ -29,13 +29,11 @@
             const toolEl = dlg.querySelector('[data-game^="tool-"]');
             if (toolEl) window.NP.resetTool(toolEl);
         }
-        // FIX: карусели «3 клика» тоже сбрасываем — паритет с тренажёрами
         if (typeof window.NP.resetGame === 'function') {
             dlg.querySelectorAll('[data-game]:not([data-game^="tool-"])')
                 .forEach(el => window.NP.resetGame(el));
         }
 
-        // FIX: фокус — на первый интерактив в теле, а не на крестик
         const first = dlg.querySelector(
             '.modal__body button, .modal__body input, .modal__body [tabindex]'
         ) || dlg.querySelector('button, input, [tabindex]');
