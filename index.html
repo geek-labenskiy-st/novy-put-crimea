@@ -13,7 +13,6 @@
     <meta property="og:title" content="Новый Путь — бесплатная помощь зависимым в Крыму">
     <meta property="og:description" content="Бесплатно. Бессрочно. Анонимно. Помощь зависимым и их близким в Крыму.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://novy-put-crimea.ru">
     <meta property="og:locale" content="ru_RU">
 
     <script type="application/ld+json">
@@ -33,12 +32,11 @@
     }
     </script>
 
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/fontsource/css/cormorant-garamond@latest/cyrillic-600-normal.css">
+    <!-- FIX: убран неиспользуемый weight 600, оставлен только 700 -->
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/fontsource/css/cormorant-garamond@latest/cyrillic-700-normal.css">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style/main.css">
 
     <!-- Установка сезона ДО отрисовки (без мигания) -->
     <script>
@@ -63,12 +61,23 @@
                     <span class="header__logo-icon" aria-hidden="true">🌿</span>
                     <span class="header__logo-text">Новый Путь</span>
                 </a>
+
+                <!-- FIX: добавлены якоря в шапку (как в подвале) -->
+                <nav class="header__nav" aria-label="Основная навигация">
+                    <ul class="header__nav-list">
+                        <li><a href="#for-whom-title">Для кого</a></li>
+                        <li><a href="#what-we-do-title">Что делаем</a></li>
+                        <li><a href="#trust-title">Доверие</a></li>
+                        <li><a href="#steps-title">Как помочь</a></li>
+                        <li><a href="#contacts-title">Контакты</a></li>
+                    </ul>
+                </nav>
+
                 <div class="header__contacts">
                     <a href="tel:+79789581188" class="header__phone" aria-label="Позвонить: 8 978 958-11-88">
                         <span class="header__phone-icon" aria-hidden="true">📞</span>
                         <span class="header__phone-number">8 (978) 958-11-88</span>
                     </a>
-                    <a href="tel:+79789581188" class="btn btn--primary btn--sm header__call-btn">Позвонить</a>
                 </div>
             </div>
         </div>
@@ -126,9 +135,7 @@
                 </h1>
                 <p class="hero__subtitle">Вы не одни. Мы рядом — круглосуточно, без осуждения, без условий.</p>
                 <div class="hero__actions">
-                    <a href="tel:+79789581188" class="btn btn--primary btn--lg"><span aria-hidden="true">📞</span>
-                        Позвонить сейчас</a>
-                    <button type="button" class="btn btn--secondary btn--lg" data-modal-open="callback">Заказать
+                    <button type="button" class="btn btn--primary btn--lg" data-modal-open="callback">Заказать
                         обратный звонок</button>
                 </div>
                 <p class="hero__note">Разговор бесплатный. Анонимность гарантируем.</p>
@@ -321,8 +328,8 @@
         <section class="section section--callback" id="callback" aria-labelledby="callback-title">
             <div class="container">
                 <div class="callback-cta reveal">
-                    <h2 class="section__title" id="callback-title" style="margin-bottom:16px;">Заказать обратный звонок
-                    </h2>
+                    <!-- FIX: убран инлайн style, отступ задан через .callback-cta h2 -->
+                    <h2 class="section__title" id="callback-title">Заказать обратный звонок</h2>
                     <p>Оставьте номер — мы перезвоним. Это бесплатно и анонимно.</p>
                     <button type="button" class="btn btn--primary btn--lg" data-modal-open="callback">Оставить
                         номер</button>
@@ -330,8 +337,8 @@
             </div>
         </section>
 
-        <!-- КОНТАКТЫ -->
-        <section class="section section--contacts" aria-labelledby="contacts-title">
+        <!-- FIX: добавлена секция "Контакты" (#contacts-title), т.к. на неё ссылаются шапка и подвал -->
+        <section class="section section--contacts" id="contacts" aria-labelledby="contacts-title">
             <div class="container">
                 <h2 class="section__title reveal" id="contacts-title">Контакты</h2>
                 <div class="contacts">
@@ -339,17 +346,9 @@
                         <div class="contact-item__icon" aria-hidden="true">📞</div>
                         <div>
                             <h3 class="contact-item__title">Телефон</h3>
-                            <a href="tel:+79789581188" class="contact-item__value contact-item__value--link">8 (978)
-                                958-11-88</a>
+                            <p class="contact-item__value"><a class="contact-item__value--link"
+                                    href="tel:+79789581188">8 (978) 958-11-88</a></p>
                             <p class="contact-item__note">Круглосуточно, бесплатно</p>
-                        </div>
-                    </div>
-                    <div class="contact-item reveal">
-                        <div class="contact-item__icon" aria-hidden="true">💬</div>
-                        <div>
-                            <h3 class="contact-item__title">Мессенджер</h3>
-                            <p class="contact-item__value">MAX</p>
-                            <p class="contact-item__note">Напишите — ответим</p>
                         </div>
                     </div>
                     <div class="contact-item reveal">
@@ -358,6 +357,16 @@
                             <h3 class="contact-item__title">Регион</h3>
                             <p class="contact-item__value">Республика Крым</p>
                             <p class="contact-item__note">Помощь по всему полуострову</p>
+                        </div>
+                    </div>
+                    <div class="contact-item reveal">
+                        <div class="contact-item__icon" aria-hidden="true">💬</div>
+                        <div>
+                            <h3 class="contact-item__title">Обратная связь</h3>
+                            <p class="contact-item__value"><button type="button" class="contact-item__value--link"
+                                    style="background:none;border:none;padding:0;cursor:pointer;font-family:inherit;font-size:inherit;"
+                                    data-modal-open="callback">Оставить номер</button></p>
+                            <p class="contact-item__note">Перезвоним в ближайшее время</p>
                         </div>
                     </div>
                 </div>
@@ -440,7 +449,7 @@
             </p>
 
             <div class="footer__bottom">
-                <span>© 2026 Новый Путь — Крым. Содружество центров реабилитации.</span>
+                <span>© <span id="year">2026</span> Новый Путь — Крым. Содружество центров реабилитации.</span>
                 <span class="footer__age" aria-label="Информация для лиц старше 18 лет">18+</span>
                 <button type="button" class="footer__top-btn"
                     onclick="window.scrollTo({top:0,behavior:'smooth'})">Наверх ↑</button>
@@ -734,7 +743,19 @@
         </p>
     </template>
 
-    <script src="code.js"></script>
+    <!-- Модули JS. Порядок важен: зависимости сверху вниз -->
+    <script src="js/01-utils.js"></script>
+    <script src="js/02-season.js"></script>
+    <script src="js/03-modal.js"></script>
+    <script src="js/04-legal.js"></script>
+    <script src="js/05-games.js"></script>
+    <script src="js/06-tools-core.js"></script>
+    <script src="js/07-tool-urge.js"></script>
+    <script src="js/08-tool-triggers.js"></script>
+    <script src="js/09-tool-sober.js"></script>
+    <script src="js/10-form.js"></script>
+    <script src="js/11-scroll.js"></script>
+    <script src="js/12-reveal.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,223 @@
+/* ===== HEADER ===== */
+.header {
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-sm);
+    z-index: 1000;
+    padding: var(--space-sm) 0;
+    width: 100%;
+    max-width: 100vw;
+}
+
+.header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    min-width: 0;
+}
+
+.header__logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    text-decoration: none;
+    color: var(--color-text);
+    position: relative;
+    padding: var(--space-2xs) 0;
+    min-width: 0;
+    animation: logoAppear 1.2s ease-out;
+}
+
+.header__logo-icon {
+    font-size: 1.8rem;
+    display: inline-block;
+    transform-origin: bottom center;
+    animation: leafSway 4s ease-in-out infinite;
+    filter: drop-shadow(0 2px 4px rgba(90, 138, 106, 0.3));
+    flex-shrink: 0;
+}
+
+@keyframes leafSway {
+
+    0%,
+    100% {
+        transform: rotate(-4deg) scale(1);
+    }
+
+    50% {
+        transform: rotate(6deg) scale(1.05);
+    }
+}
+
+.header__logo-text {
+    font-family: var(--font-logo);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #4a7559 0%, #7ba88b 50%, #5a8a6a 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 6s ease-in-out infinite;
+    position: relative;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.header__logo-text::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.5s ease;
+}
+
+.header__logo:hover .header__logo-text::after {
+    transform: scaleX(1);
+}
+
+.header__logo:hover .header__logo-icon {
+    animation: leafSwayHover 0.8s ease-in-out;
+}
+
+@keyframes leafSwayHover {
+    0% {
+        transform: rotate(0) scale(1);
+    }
+
+    25% {
+        transform: rotate(-10deg) scale(1.15);
+    }
+
+    50% {
+        transform: rotate(8deg) scale(1.1);
+    }
+
+    75% {
+        transform: rotate(-5deg) scale(1.05);
+    }
+
+    100% {
+        transform: rotate(0) scale(1);
+    }
+}
+
+@keyframes shimmer {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes logoAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.header__contacts {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    flex-shrink: 0;
+    min-width: 0;
+}
+
+.header__phone {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    text-decoration: none;
+    color: var(--color-text);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius);
+    transition: background var(--transition);
+    white-space: nowrap;
+}
+
+.header__phone:hover {
+    background: var(--color-bg-alt);
+}
+
+.header__phone-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+/* .header__call-btn удалён — класс больше не используется */
+
+@media (max-width: 480px) {
+    .header__phone-number {
+        display: none;
+    }
+
+    .header__phone {
+        padding: var(--space-xs);
+    }
+
+    .header__phone-icon {
+        font-size: 1.4rem;
+    }
+
+    .header__logo-text {
+        font-size: 1.35rem;
+    }
+
+    .header__logo-icon {
+        font-size: 1.6rem;
+    }
+
+    .header__inner {
+        gap: var(--space-xs);
+    }
+
+    :root {
+        --header-h: 58px;
+    }
+}
+
+@media (max-width: 360px) {
+    .header__phone-number {
+        display: inline;
+        font-size: 0.85rem;
+    }
+
+    .header__phone {
+        padding: var(--space-xs) 10px;
+    }
+
+    .header__inner {
+        gap: var(--space-2xs);
+    }
+
+    .header__logo-text {
+        font-size: 1.2rem;
+    }
+
+    .header__logo-icon {
+        font-size: 1.4rem;
+    }
+}

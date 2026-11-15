@@ -1,0 +1,70 @@
+/* ===== BUTTONS ===== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    padding: 14px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all var(--transition);
+    min-height: 48px;
+    text-align: center;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    white-space: normal;
+    word-wrap: break-word;
+    box-sizing: border-box;
+    max-width: 100%;
+    font-family: inherit;
+}
+
+.btn--primary {
+    background: var(--season-primary);
+    color: var(--color-white);
+}
+
+.btn--primary:hover,
+.btn--primary:active {
+    background: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn--primary:active {
+    transform: scale(0.98);
+}
+
+.btn--secondary {
+    background: transparent;
+    color: var(--season-primary);
+    border: 2px solid var(--season-primary);
+    flex-shrink: 0;
+    max-width: 100%;
+}
+
+.btn--secondary:hover,
+.btn--secondary:active {
+    background: var(--season-primary);
+    color: var(--color-white);
+}
+
+.btn--lg {
+    padding: 18px 36px;
+    font-size: 1.1rem;
+    min-height: 56px;
+}
+
+.btn--sm {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    min-height: 44px;
+}
+
+.btn--full {
+    width: 100%;
+}
