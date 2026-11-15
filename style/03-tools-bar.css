@@ -4,15 +4,13 @@
     top: var(--header-h);
     z-index: 990;
     border-bottom: 1px solid var(--color-border);
-    padding: var(--space-xs) 0;
+    padding: var(--space-2xs) 0;
     box-shadow: var(--shadow-sm);
     background: var(--color-bg-alt);
-    /* fallback для старых браузеров */
     background: linear-gradient(135deg,
             color-mix(in srgb, var(--season-primary) 8%, var(--color-white)) 0%,
             color-mix(in srgb, var(--season-accent) 10%, var(--color-white)) 100%);
     border-bottom-color: var(--color-border);
-    /* fallback */
     border-bottom-color: color-mix(in srgb, var(--season-primary) 20%, transparent);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -21,8 +19,8 @@
 .tools-bar__inner {
     display: flex;
     align-items: center;
-    gap: var(--space-md);
-    flex-wrap: wrap;
+    gap: var(--space-sm);
+    flex-wrap: nowrap;
     justify-content: center;
 }
 
@@ -36,6 +34,7 @@
     white-space: nowrap;
     text-transform: uppercase;
     letter-spacing: 0.04em;
+    flex-shrink: 0;
 }
 
 .tools-bar__label-icon {
@@ -44,16 +43,17 @@
 
 .tools-bar__buttons {
     display: flex;
-    gap: var(--space-xs);
-    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    flex-wrap: nowrap;
     justify-content: center;
+    min-width: 0;
 }
 
 .tools-bar__btn {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-xs);
-    padding: var(--space-xs) 14px;
+    gap: var(--space-2xs);
+    padding: var(--space-xs) 12px;
     background: var(--color-white);
     border: 1.5px solid var(--color-border);
     border-color: color-mix(in srgb, var(--season-primary) 30%, transparent);
@@ -65,6 +65,9 @@
     text-align: left;
     min-height: 44px;
     box-shadow: 0 1px 4px rgba(45, 58, 46, 0.06);
+    flex: 1 1 0;
+    min-width: 0;
+    justify-content: center;
 }
 
 .tools-bar__btn:hover,
@@ -82,7 +85,7 @@
 }
 
 .tools-bar__btn-icon {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     line-height: 1;
     flex-shrink: 0;
 }
@@ -92,10 +95,11 @@
     flex-direction: column;
     line-height: 1.15;
     min-width: 0;
+    overflow: hidden;
 }
 
 .tools-bar__btn-title {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 700;
     white-space: nowrap;
     overflow: hidden;
@@ -103,18 +107,21 @@
 }
 
 .tools-bar__btn-sub {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     color: var(--color-text-muted);
     transition: color var(--transition);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 @media (max-width: 640px) {
     html {
-        scroll-padding-top: calc(var(--header-h) + 56px);
+        scroll-padding-top: calc(var(--header-h) + 52px);
     }
 
     .tools-bar {
-        padding: var(--space-xs) 0;
+        padding: var(--space-2xs) 0;
     }
 
     .tools-bar__label {
@@ -129,17 +136,17 @@
     .tools-bar__btn {
         flex: 1 1 0;
         min-width: 0;
-        padding: var(--space-xs) 10px;
-        gap: var(--space-2xs);
+        padding: 6px 8px;
+        gap: 4px;
         justify-content: center;
     }
 
     .tools-bar__btn-icon {
-        font-size: 1.05rem;
+        font-size: 1rem;
     }
 
     .tools-bar__btn-title {
-        font-size: 0.78rem;
+        font-size: 0.72rem;
     }
 
     .tools-bar__btn-sub {
@@ -149,17 +156,25 @@
 
 @media (max-width: 400px) {
     .tools-bar__btn {
-        flex: 1 1 45%;
-        justify-content: center;
+        flex: 1 1 0;
+        padding: 6px 4px;
+    }
+
+    .tools-bar__btn-title {
+        font-size: 0.68rem;
+    }
+
+    .tools-bar__btn-icon {
+        font-size: 0.95rem;
     }
 }
 
 @media (max-width: 360px) {
     .tools-bar__btn-title {
-        font-size: 0.72rem;
+        font-size: 0.64rem;
     }
 
     .tools-bar__btn-icon {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 }
