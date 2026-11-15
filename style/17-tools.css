@@ -156,3 +156,25 @@
     font-size: 0.85rem;
     color: var(--color-text-muted);
 }
+
+/* FIX: адаптация дыхательного круга и слайдера на мобиле */
+@media (max-width: 480px) {
+    .breath-circle {
+        width: 100px;
+        height: 100px;
+        font-size: 0.9rem;
+    }
+
+    .tool-slider {
+        margin-bottom: var(--space-md);
+    }
+
+    .tool-result {
+        padding: var(--space-sm);
+        font-size: 0.9rem;
+    }
+
+    .game__step-title {
+        font-size: 1.1rem;
+    }
+}

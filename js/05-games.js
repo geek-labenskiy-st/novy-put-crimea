@@ -47,6 +47,7 @@
             const s = steps[current];
             const isLast = current === steps.length - 1;
 
+            // FIX: на последнем шаге оставлена только кнопка "Закрыть" (без "Позвонить" и "Оставить номер")
             stage.innerHTML = `
             <div class="game__step">
                 <span class="game__icon" aria-hidden="true">${s.icon}</span>
@@ -56,7 +57,7 @@
                     ${current > 0 ? '<button type="button" class="btn btn--secondary btn--sm" data-game-back>Назад</button>' : ''}
                     ${!isLast
                     ? '<button type="button" class="btn btn--primary" data-game-next>Дальше →</button>'
-                    : '<button type="button" class="btn btn--primary" data-game-cta="call">Позвонить</button><button type="button" class="btn btn--secondary" data-game-cta="callback">Оставить номер</button>'}
+                    : '<button type="button" class="btn btn--secondary" data-game-close>Закрыть</button>'}
                 </div>
             </div>`;
             updateProgress();
@@ -67,12 +68,9 @@
                 if (current < steps.length - 1) { current++; render(); }
             } else if (e.target.closest('[data-game-back]')) {
                 if (current > 0) { current--; render(); }
-            } else if (e.target.closest('[data-game-cta="call"]')) {
-                window.location.href = 'tel:+79789581188';
-            } else if (e.target.closest('[data-game-cta="callback"]')) {
+            } else if (e.target.closest('[data-game-close]')) {
                 const dlg = gameEl.closest('dialog');
                 if (dlg) NP.closeModal(dlg);
-                setTimeout(() => NP.openModal('callback'), 150);
             }
         });
 

@@ -32,7 +32,6 @@
     }
     </script>
 
-    <!-- FIX: убран неиспользуемый weight 600, оставлен только 700 -->
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/fontsource/css/cormorant-garamond@latest/cyrillic-700-normal.css">
 
@@ -62,7 +61,6 @@
                     <span class="header__logo-text">Новый Путь</span>
                 </a>
 
-                <!-- FIX: добавлены якоря в шапку (как в подвале) -->
                 <nav class="header__nav" aria-label="Основная навигация">
                     <ul class="header__nav-list">
                         <li><a href="#for-whom-title">Для кого</a></li>
@@ -232,9 +230,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="section__cta">
-                    <button type="button" class="btn btn--primary" data-modal-open="services">Узнать подробнее</button>
-                </div>
+                <!-- FIX: удалена кнопка «Узнать подробнее» внизу секции -->
             </div>
         </section>
 
@@ -265,10 +261,7 @@
                         <div class="stat__label">мы на связи — днём и ночью</div>
                     </div>
                 </div>
-                <div class="section__cta">
-                    <button type="button" class="btn btn--secondary" data-modal-open="trust">Почему нам
-                        доверяют</button>
-                </div>
+                <!-- FIX: удалена кнопка «Почему нам доверяют» под статистикой -->
                 <blockquote class="testimonial reveal">
                     <p class="testimonial__text">«Я думал, что уже никому не смогу помочь. Но один звонок изменил всё.
                         Мне не пришлось объяснять, оправдываться — меня просто выслушали и сказали: приезжай, мы ждём.»
@@ -317,27 +310,13 @@
                         </p>
                     </div>
                 </div>
-                <div class="section__cta">
-                    <button type="button" class="btn btn--primary btn--lg" data-modal-open="help">Начать — три
-                        клика</button>
-                </div>
+                <!-- FIX: удалена кнопка «Начать — три клика» внизу секции -->
             </div>
         </section>
 
-        <!-- CALLBACK CTA -->
-        <section class="section section--callback" id="callback" aria-labelledby="callback-title">
-            <div class="container">
-                <div class="callback-cta reveal">
-                    <!-- FIX: убран инлайн style, отступ задан через .callback-cta h2 -->
-                    <h2 class="section__title" id="callback-title">Заказать обратный звонок</h2>
-                    <p>Оставьте номер — мы перезвоним. Это бесплатно и анонимно.</p>
-                    <button type="button" class="btn btn--primary btn--lg" data-modal-open="callback">Оставить
-                        номер</button>
-                </div>
-            </div>
-        </section>
+        <!-- FIX: секция .section--callback удалена целиком -->
 
-        <!-- FIX: добавлена секция "Контакты" (#contacts-title), т.к. на неё ссылаются шапка и подвал -->
+        <!-- Контакты -->
         <section class="section section--contacts" id="contacts" aria-labelledby="contacts-title">
             <div class="container">
                 <h2 class="section__title reveal" id="contacts-title">Контакты</h2>

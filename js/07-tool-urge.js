@@ -5,11 +5,13 @@
 (function () {
     'use strict';
 
+    window.NP = window.NP || {};
+    NP.urgeTimer = null;
+
     const urgeGame = document.querySelector('[data-game="tool-urge"]');
     if (!urgeGame) return;
 
     const steps = [
-        /* Шаг 1: оценка тяги «до» */
         {
             render(el, api) {
                 el.innerHTML = `
@@ -27,8 +29,6 @@
                 });
             }
         },
-
-        /* Шаг 2: где ощущается тяга */
         {
             render(el, api) {
                 el.innerHTML = `
@@ -69,8 +69,6 @@
                 nextBtn.addEventListener('click', api.next);
             }
         },
-
-        /* Шаг 3: 15 секунд наблюдения */
         {
             render(el, api) {
                 el.innerHTML = `
@@ -87,12 +85,10 @@
                         <button type="button" class="btn btn--primary" data-act="start" id="urgeStart">▶ Запустить счётчик</button>
                         <button type="button" class="btn btn--primary" data-act="next" id="urgeNext" disabled>Завершить →</button>
                     </div>`;
-                const circle = el.querySelector('#urgeCircle');
                 const status = el.querySelector('#urgeStatus');
                 const count = el.querySelector('#urgeCount');
                 const startBtn = el.querySelector('#urgeStart');
                 const nextBtn = el.querySelector('#urgeNext');
-                let timer = null;
                 let started = false;
 
                 function startTimer() {
@@ -103,11 +99,14 @@
                     let left = 15;
                     status.textContent = 'Наблюдайте…';
                     count.textContent = left + ' с';
-                    timer = setInterval(() => {
+
+                    // FIX: сохраняем таймер глобально, чтобы 03-modal.js мог очистить
+                    NP.urgeTimer = setInterval(() => {
                         left--;
                         count.textContent = left + ' с';
                         if (left <= 0) {
-                            clearInterval(timer);
+                            clearInterval(NP.urgeTimer);
+                            NP.urgeTimer = null;
                             status.textContent = 'Готово ✓';
                             count.textContent = '';
                             startBtn.textContent = '✓ Выполнено';
@@ -119,17 +118,15 @@
 
                 startBtn.addEventListener('click', startTimer);
                 el.querySelector('[data-act="back"]').addEventListener('click', () => {
-                    if (timer) clearInterval(timer);
+                    if (NP.urgeTimer) { clearInterval(NP.urgeTimer); NP.urgeTimer = null; }
                     api.back();
                 });
                 nextBtn.addEventListener('click', () => {
-                    if (timer) clearInterval(timer);
+                    if (NP.urgeTimer) { clearInterval(NP.urgeTimer); NP.urgeTimer = null; }
                     api.next();
                 });
             }
         },
-
-        /* Шаг 4: оценка «после» + дельта */
         {
             render(el, api) {
                 const before = api.state.data.level;
@@ -168,8 +165,6 @@
                 });
             }
         },
-
-        /* Шаг 5: что делать дальше */
         {
             render(el, api) {
                 const d = api.state.data;

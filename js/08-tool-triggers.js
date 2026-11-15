@@ -19,8 +19,9 @@
         { key: 'habit', icon: '🔁', label: 'Привычные места и время (ритуалы)' }
     ];
 
+    const esc = (s) => (window.NP && NP.escapeHtml) ? NP.escapeHtml(s) : String(s);
+
     const steps = [
-        /* Шаг 1: выбор триггеров */
         {
             render(el, api) {
                 el.innerHTML = `
@@ -31,7 +32,7 @@
                         ${TRIGGER_OPTIONS.map(o => `
                             <button type="button" class="tool-choice" data-key="${o.key}">
                                 <span class="tool-choice__icon">${o.icon}</span>
-                                <span class="tool-choice__label">${o.label}</span>
+                                <span class="tool-choice__label">${esc(o.label)}</span>
                             </button>`).join('')}
                     </div>
                     <div class="game__nav">
@@ -55,8 +56,6 @@
                 });
             }
         },
-
-        /* Шаг 2: недавний случай */
         {
             render(el, api) {
                 el.innerHTML = `
@@ -75,8 +74,6 @@
                 });
             }
         },
-
-        /* Шаг 3: карта */
         {
             render(el, api) {
                 const selected = api.state.data.triggers || [];
@@ -87,8 +84,8 @@
                     <p class="game__step-text">Вот что вы отметили. Это не приговор — это карта, по которой можно проложить обходные пути.</p>
                     <div class="tool-result">
                         <strong>Ваши триггеры:</strong>
-                        <ul>${labels.map(o => `<li>${o.icon} ${o.label}</li>`).join('')}</ul>
-                        ${api.state.data.story ? `<p style="margin-top:12px;"><strong>Ваш случай:</strong> ${NP.escapeHtml(api.state.data.story)}</p>` : ''}
+                        <ul>${labels.map(o => `<li>${o.icon} ${esc(o.label)}</li>`).join('')}</ul>
+                        ${api.state.data.story ? `<p style="margin-top:12px;"><strong>Ваш случай:</strong> ${esc(api.state.data.story)}</p>` : ''}
                     </div>
                     <p class="game__step-text">Для каждого триггера можно заранее придумать <strong>план Б</strong> — что вы сделаете вместо привычного действия.</p>
                     <div class="game__nav">
@@ -102,8 +99,6 @@
                 el.querySelector('[data-act="plan"]').addEventListener('click', api.next);
             }
         },
-
-        /* Шаг 4: план Б */
         {
             render(el, api) {
                 const selected = api.state.data.triggers || [];
@@ -115,7 +110,7 @@
                     <div class="tool-choices" id="planList">
                         ${labels.map(o => `
                             <div style="margin-bottom:12px;text-align:left;">
-                                <label class="form__label" for="plan-${o.key}">${o.icon} ${o.label}</label>
+                                <label class="form__label" for="plan-${o.key}">${o.icon} ${esc(o.label)}</label>
                                 <input type="text" class="form__input" id="plan-${o.key}" data-key="${o.key}" placeholder="Например: позвоню другу, выйду на прогулку…">
                             </div>`).join('')}
                     </div>
@@ -134,8 +129,6 @@
                 });
             }
         },
-
-        /* Шаг 5: итог */
         {
             render(el, api) {
                 const d = api.state.data;
@@ -147,7 +140,7 @@
                     <div class="tool-result">
                         <strong>Триггеры и план Б:</strong>
                         <ul>
-                            ${labels.map(o => `<li><strong>${o.icon} ${o.label}</strong>${d.plans && d.plans[o.key] ? ' → ' + NP.escapeHtml(d.plans[o.key]) : ''}</li>`).join('')}
+                            ${labels.map(o => `<li><strong>${o.icon} ${esc(o.label)}</strong>${d.plans && d.plans[o.key] ? ' → ' + esc(d.plans[o.key]) : ''}</li>`).join('')}
                         </ul>
                     </div>
                     <p class="game__step-text">Если чувствуете, что не справляетесь — позвоните. Мы поможем разобрать вашу карту вместе.</p>

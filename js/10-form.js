@@ -32,29 +32,30 @@
         captchaAnswer = a + b;
         const q = document.getElementById('captchaQuestion');
         if (q) q.textContent = `Проверка: сколько будет ${a} + ${b}?`;
+        const inp = document.getElementById('captcha');
+        if (inp) inp.value = '';
     }
     generateCaptcha();
 
     /* ---------- Отправка формы ---------- */
     const form = document.getElementById('callbackForm');
+    if (!form) return;
+
     const submitBtn = document.getElementById('submitBtn');
     const successMessage = document.getElementById('callbackSuccess');
-
-    if (!form) return;
 
     form.addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        // Сброс ошибок
         document.querySelectorAll('.form__error').forEach(el => el.textContent = '');
         document.querySelectorAll('.form__input').forEach(el => el.classList.remove('error'));
 
         // Honeypot
-        if (document.getElementById('website').value) return;
+        const honey = document.getElementById('website');
+        if (honey && honey.value) return;
 
         let isValid = true;
 
-        // Телефон
         const phone = document.getElementById('phone').value.replace(/\D/g, '');
         if (phone.length !== 11) {
             document.getElementById('phoneError').textContent = 'Введите корректный номер телефона';
@@ -62,22 +63,19 @@
             isValid = false;
         }
 
-        // Роль
         const role = document.querySelector('input[name="role"]:checked');
         if (!role) {
             document.getElementById('roleError').textContent = 'Пожалуйста, выберите кто вы';
             isValid = false;
         }
 
-        // Согласие
         const consent = document.getElementById('consent');
         if (consent && !consent.checked) {
             document.getElementById('consentError').textContent = 'Необходимо согласие на обработку данных';
             isValid = false;
         }
 
-        // Капча
-        const captchaValue = parseInt(document.getElementById('captcha').value);
+        const captchaValue = parseInt(document.getElementById('captcha').value, 10);
         if (captchaValue !== captchaAnswer) {
             document.getElementById('captchaError').textContent = 'Неверный ответ. Попробуйте ещё раз.';
             document.getElementById('captcha').classList.add('error');
@@ -105,17 +103,18 @@
 
             if (response.ok) {
                 form.hidden = true;
-                successMessage.hidden = false;
+                if (successMessage) successMessage.hidden = false;
             } else {
                 throw new Error('network');
             }
         } catch (err) {
-            // Fallback: mailto
-            const name = document.getElementById('name').value || 'Не указано';
+            // FIX: fallback берёт роль из выбранного radio, а не из DOM-nextSibling
+            const name = (document.getElementById('name') || {}).value || 'Не указано';
             const phoneFormatted = document.getElementById('phone').value;
             const roleChecked = document.querySelector('input[name="role"]:checked');
-            const roleTextFallback = roleChecked ? roleChecked.nextElementSibling.textContent : 'Не указано';
-            const comment = document.getElementById('comment').value || 'Не указано';
+            const roleMap = { dependent: 'Зависимый', relative: 'Родственник', friend: 'Друг' };
+            const roleTextFallback = roleChecked ? (roleMap[roleChecked.value] || roleChecked.value) : 'Не указано';
+            const comment = (document.getElementById('comment') || {}).value || 'Не указано';
 
             const subject = encodeURIComponent('Новая заявка с сайта Новый Путь');
             const body = encodeURIComponent(

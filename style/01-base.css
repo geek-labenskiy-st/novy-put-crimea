@@ -170,3 +170,155 @@ body {
         padding: 0 var(--space-sm);
     }
 }
+
+/* ===== FIX: СЕЗОННЫЙ ЭФФЕКТ — частицы ===== */
+.season-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+    opacity: 0.75;
+}
+
+/* Контент секции — поверх частиц */
+.section>.container,
+.section .section__title,
+.section .cards,
+.section .features,
+.section .stats,
+.section .steps,
+.section .testimonial,
+.section .section__cta {
+    position: relative;
+    z-index: 1;
+}
+
+.season-particle {
+    position: absolute;
+    top: -10%;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--season-particle-color);
+    animation: particleFall linear infinite;
+    will-change: transform;
+}
+
+.season-particle:nth-child(1) {
+    left: 5%;
+    animation-duration: 14s;
+    animation-delay: 0s;
+    width: 6px;
+    height: 6px;
+}
+
+.season-particle:nth-child(2) {
+    left: 15%;
+    animation-duration: 18s;
+    animation-delay: 2s;
+    width: 10px;
+    height: 10px;
+}
+
+.season-particle:nth-child(3) {
+    left: 25%;
+    animation-duration: 12s;
+    animation-delay: 1s;
+}
+
+.season-particle:nth-child(4) {
+    left: 35%;
+    animation-duration: 20s;
+    animation-delay: 3s;
+    width: 5px;
+    height: 5px;
+}
+
+.season-particle:nth-child(5) {
+    left: 45%;
+    animation-duration: 16s;
+    animation-delay: 0.5s;
+}
+
+.season-particle:nth-child(6) {
+    left: 55%;
+    animation-duration: 22s;
+    animation-delay: 2.5s;
+    width: 12px;
+    height: 12px;
+}
+
+.season-particle:nth-child(7) {
+    left: 65%;
+    animation-duration: 13s;
+    animation-delay: 1.5s;
+}
+
+.season-particle:nth-child(8) {
+    left: 75%;
+    animation-duration: 19s;
+    animation-delay: 4s;
+    width: 7px;
+    height: 7px;
+}
+
+.season-particle:nth-child(9) {
+    left: 85%;
+    animation-duration: 15s;
+    animation-delay: 0.8s;
+}
+
+.season-particle:nth-child(10) {
+    left: 95%;
+    animation-duration: 17s;
+    animation-delay: 3.5s;
+    width: 9px;
+    height: 9px;
+}
+
+@keyframes particleFall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Сезонные формы частиц */
+html[data-season="winter"] .season-particle {
+    border-radius: 2px;
+}
+
+html[data-season="spring"] .season-particle {
+    border-radius: 60% 40% 50% 50%;
+}
+
+html[data-season="summer"] .season-particle {
+    border-radius: 50%;
+    opacity: 0.6;
+}
+
+html[data-season="autumn"] .season-particle {
+    border-radius: 0 50% 0 50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .season-particle {
+        animation: none;
+        opacity: 0.25;
+        top: 50%;
+    }
+}

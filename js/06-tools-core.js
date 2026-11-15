@@ -1,6 +1,6 @@
 /* ============================================================
    06-tools-core.js — движок психологических тренажёров
-   Экспортирует: NP.createTool(gameEl, steps, onFinish)
+   Экспортирует: NP.createTool(gameEl, steps, onFinish), NP.resetTool(gameEl)
    Зависит от: ничего. Используется в 07/08/09-файлах.
    ============================================================ */
 (function () {
@@ -8,19 +8,14 @@
 
     window.NP = window.NP || {};
 
+    const registry = new WeakMap(); // gameEl -> { render, steps, onFinish }
+
     /**
      * Создать пошаговый тренажёр.
      * @param {HTMLElement} gameEl — .game[data-game="tool-*"]
-     * @param {Array<{render: Function}>} steps — шаги. render(el, api)
-     * @param {Function} [onFinish] — вызывается при api.finish()
+     * @param {Array<{render: Function}>} steps
+     * @param {Function} [onFinish]
      * @returns {{ render: Function, go: Function }}
-     *
-     * api, передаваемый в каждый step.render:
-     *   api.state  — { step, data }
-     *   api.go(n)  — перейти к шагу n
-     *   api.next() — следующий
-     *   api.back() — предыдущий
-     *   api.finish() — завершить
      */
     function createTool(gameEl, steps, onFinish) {
         const stage = gameEl.querySelector('.game__stage');
@@ -65,9 +60,33 @@
             updateProgress();
         }
 
+        const api = {
+            render,
+            go,
+            // FIX: сброс к первому шагу + чистые data
+            reset() {
+                if (window.NP && NP.breathTimer) { clearTimeout(NP.breathTimer); NP.breathTimer = null; }
+                if (window.NP && NP.urgeTimer) { clearInterval(NP.urgeTimer); NP.urgeTimer = null; }
+                state.step = 0;
+                state.data = {};
+                render();
+            }
+        };
+
+        registry.set(gameEl, api);
         render();
-        return { render, go };
+        return api;
+    }
+
+    /**
+     * FIX: сбросить тренажёр по его контейнеру.
+     * @param {HTMLElement} gameEl
+     */
+    function resetTool(gameEl) {
+        const api = registry.get(gameEl);
+        if (api) api.reset();
     }
 
     NP.createTool = createTool;
+    NP.resetTool = resetTool;
 })();

@@ -7,13 +7,12 @@
     'use strict';
 
     window.NP = window.NP || {};
-    NP.breathTimer = null; // глобально виден в 03-modal.js
+    NP.breathTimer = NP.breathTimer || null;
 
     const soberGame = document.querySelector('[data-game="tool-sober"]');
     if (!soberGame) return;
 
     const steps = [
-        /* Шаг 1: описание */
         {
             render(el, api) {
                 el.innerHTML = `
@@ -38,8 +37,6 @@
                 });
             }
         },
-
-        /* Шаг 2: дыхание (анимация) */
         {
             render(el, api) {
                 el.innerHTML = `
@@ -96,14 +93,11 @@
                 setTimeout(runPhase, 400);
 
                 el.querySelector('[data-act="stop"]').addEventListener('click', () => {
-                    clearTimeout(NP.breathTimer);
-                    NP.breathTimer = null;
+                    if (NP.breathTimer) { clearTimeout(NP.breathTimer); NP.breathTimer = null; }
                     api.back();
                 });
             }
         },
-
-        /* Шаг 3: оценка состояния */
         {
             render(el, api) {
                 el.innerHTML = `

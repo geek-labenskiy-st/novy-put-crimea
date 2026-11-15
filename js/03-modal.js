@@ -9,8 +9,6 @@
 
     window.NP = window.NP || {};
 
-    let lastTrigger = null;
-
     /**
      * Открыть модалку по суффиксу id (modal-<id>).
      * @param {string} id
@@ -18,11 +16,19 @@
     function openModal(id) {
         const dlg = document.getElementById('modal-' + id);
         if (!dlg) return;
-        if (dlg.open) return; // защита от повторного открытия
+        if (dlg.open) return;
 
-        lastTrigger = document.activeElement;
+        // FIX: храним триггер per-dialog, а не глобально
+        dlg._trigger = document.activeElement;
+
         if (typeof dlg.showModal === 'function') dlg.showModal();
         else dlg.setAttribute('open', '');
+
+        // FIX: сброс состояния тренажёра при открытии (см. 06-tools-core.js)
+        if (typeof window.NP.resetTool === 'function') {
+            const gameEl = dlg.querySelector('[data-game^="tool-"]');
+            if (gameEl) window.NP.resetTool(gameEl);
+        }
 
         const first = dlg.querySelector('button, input, [tabindex]');
         if (first) setTimeout(() => first.focus(), 50);
@@ -37,9 +43,11 @@
         if (typeof dlg.close === 'function') dlg.close();
         else dlg.removeAttribute('open');
 
-        if (lastTrigger && lastTrigger.isConnected && typeof lastTrigger.focus === 'function') {
-            lastTrigger.focus();
+        const trigger = dlg._trigger;
+        if (trigger && trigger.isConnected && typeof trigger.focus === 'function') {
+            trigger.focus();
         }
+        dlg._trigger = null;
     }
 
     /* Навешиваем обработчики на все <dialog class="modal"> */
@@ -52,15 +60,23 @@
             if (e.target === dlg) closeModal(dlg);
         });
 
-        // Сброс таймера дыхания (если модалка — тренажёр SOBER)
+        // FIX: общий сброс таймеров + фокус при закрытии
         dlg.addEventListener('close', () => {
-            if (dlg.id === 'modal-tool-sober' && window.NP && NP.breathTimer) {
+            // SOBER
+            if (window.NP && NP.breathTimer) {
                 clearTimeout(NP.breathTimer);
                 NP.breathTimer = null;
             }
-            if (lastTrigger && lastTrigger.isConnected && typeof lastTrigger.focus === 'function') {
-                lastTrigger.focus();
+            // FIX: URGE — отдельный таймер
+            if (window.NP && NP.urgeTimer) {
+                clearInterval(NP.urgeTimer);
+                NP.urgeTimer = null;
             }
+            const trigger = dlg._trigger;
+            if (trigger && trigger.isConnected && typeof trigger.focus === 'function') {
+                trigger.focus();
+            }
+            dlg._trigger = null;
         });
     });
 

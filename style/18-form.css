@@ -183,3 +183,16 @@
     color: var(--color-text-muted);
     font-style: italic;
 }
+
+/* FIX: fallback для :has() и мобильная раскладка радио-группы */
+.form__radio:focus-within {
+    border-color: var(--season-primary);
+    background: rgba(90, 138, 106, 0.1);
+}
+
+@media (max-width: 400px) {
+    .form__radio {
+        flex: 1 1 100%;
+        justify-content: center;
+    }
+}

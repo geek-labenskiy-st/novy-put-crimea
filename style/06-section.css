@@ -64,7 +64,14 @@
     }
 }
 
+/* ===== FIX: .section__cta — отступ снизу (как и сверху), кроме последнего элемента ===== */
 .section__cta {
     text-align: center;
     margin-top: var(--space-2xl);
+    margin-bottom: var(--space-2xl);
+}
+
+.section__cta:last-child,
+.section>.container>.section__cta:last-child {
+    margin-bottom: 0;
 }

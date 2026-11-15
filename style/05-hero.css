@@ -211,7 +211,8 @@
     .hero__title {
         font-size: 1.7rem;
         line-height: 1.25;
-        padding: 0 var(--space-2xs);
+        /* FIX: больше воздуха по бокам */
+        padding: 0 var(--space-xs);
     }
 
     .hero__subtitle {

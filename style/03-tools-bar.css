@@ -3,7 +3,6 @@
     position: sticky;
     top: var(--header-h);
     z-index: 990;
-    background: var(--color-bg-alt);
     border-bottom: 1px solid var(--color-border);
     padding: var(--space-xs) 0;
     box-shadow: var(--shadow-sm);
@@ -88,11 +87,15 @@
     display: flex;
     flex-direction: column;
     line-height: 1.15;
+    min-width: 0;
 }
 
 .tools-bar__btn-title {
     font-size: 0.85rem;
     font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .tools-bar__btn-sub {
@@ -133,6 +136,14 @@
 
     .tools-bar__btn-sub {
         display: none;
+    }
+}
+
+/* FIX: очень узкие экраны — 2 строки кнопок вместо 3 в ряд */
+@media (max-width: 400px) {
+    .tools-bar__btn {
+        flex: 1 1 45%;
+        justify-content: center;
     }
 }
 

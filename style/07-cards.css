@@ -50,3 +50,28 @@
     color: var(--color-text-muted);
     line-height: 1.6;
 }
+
+/* FIX: мобильная адаптация модалок и дыхательного круга */
+@media (max-width: 480px) {
+    .modal[open] {
+        padding: var(--space-xs);
+    }
+
+    .modal__inner {
+        padding: var(--space-lg) var(--space-md);
+        max-height: 92dvh;
+        max-height: 92vh;
+    }
+
+    .modal__title {
+        font-size: 1.25rem;
+    }
+
+    .modal__header {
+        margin-bottom: var(--space-md);
+    }
+
+    .modal__body {
+        font-size: 0.95rem;
+    }
+}
