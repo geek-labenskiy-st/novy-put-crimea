@@ -10,6 +10,12 @@
     transform: translateY(0);
 }
 
+/* FIX: без JS (класс no-js на <html>) контент должен быть виден */
+.no-js .reveal {
+    opacity: 1;
+    transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
 
     *,

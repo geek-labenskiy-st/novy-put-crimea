@@ -18,36 +18,38 @@
         if (!dlg) return;
         if (dlg.open) return;
 
-        // FIX: храним триггер per-dialog, а не глобально
+        // храним триггер per-dialog
         dlg._trigger = document.activeElement;
 
         if (typeof dlg.showModal === 'function') dlg.showModal();
         else dlg.setAttribute('open', '');
 
-        // FIX: сброс состояния тренажёра при открытии (см. 06-tools-core.js)
+        // сброс состояния тренажёров и «3 клика» при открытии
         if (typeof window.NP.resetTool === 'function') {
-            const gameEl = dlg.querySelector('[data-game^="tool-"]');
-            if (gameEl) window.NP.resetTool(gameEl);
+            const toolEl = dlg.querySelector('[data-game^="tool-"]');
+            if (toolEl) window.NP.resetTool(toolEl);
+        }
+        // FIX: карусели «3 клика» тоже сбрасываем — паритет с тренажёрами
+        if (typeof window.NP.resetGame === 'function') {
+            dlg.querySelectorAll('[data-game]:not([data-game^="tool-"])')
+                .forEach(el => window.NP.resetGame(el));
         }
 
-        const first = dlg.querySelector('button, input, [tabindex]');
+        // FIX: фокус — на первый интерактив в теле, а не на крестик
+        const first = dlg.querySelector(
+            '.modal__body button, .modal__body input, .modal__body [tabindex]'
+        ) || dlg.querySelector('button, input, [tabindex]');
         if (first) setTimeout(() => first.focus(), 50);
     }
 
     /**
-     * Закрыть модалку и вернуть фокус.
+     * Закрыть модалку. Возврат фокуса — только в обработчике 'close'.
      * @param {HTMLDialogElement} dlg
      */
     function closeModal(dlg) {
         if (!dlg) return;
         if (typeof dlg.close === 'function') dlg.close();
         else dlg.removeAttribute('open');
-
-        const trigger = dlg._trigger;
-        if (trigger && trigger.isConnected && typeof trigger.focus === 'function') {
-            trigger.focus();
-        }
-        dlg._trigger = null;
     }
 
     /* Навешиваем обработчики на все <dialog class="modal"> */
@@ -60,20 +62,21 @@
             if (e.target === dlg) closeModal(dlg);
         });
 
-        // FIX: общий сброс таймеров + фокус при закрытии
+        // Единая точка: сброс таймеров + возврат фокуса
         dlg.addEventListener('close', () => {
             // SOBER
             if (window.NP && NP.breathTimer) {
                 clearTimeout(NP.breathTimer);
                 NP.breathTimer = null;
             }
-            // FIX: URGE — отдельный таймер
+            // URGE
             if (window.NP && NP.urgeTimer) {
                 clearInterval(NP.urgeTimer);
                 NP.urgeTimer = null;
             }
             const trigger = dlg._trigger;
-            if (trigger && trigger.isConnected && typeof trigger.focus === 'function') {
+            if (trigger && trigger.isConnected && trigger !== document.body &&
+                typeof trigger.focus === 'function') {
                 trigger.focus();
             }
             dlg._trigger = null;

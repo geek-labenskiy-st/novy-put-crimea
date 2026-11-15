@@ -18,15 +18,14 @@
         ],
         help: [
             { icon: '📞', title: 'Шаг 1: Позвоните', text: 'Или оставьте номер — в форме ниже. Это анонимно и бесплатно. Один клик.' },
-            { icon: '🔔', title: 'Шаг 2: Мы перезвоним', text: 'В течение пары часов с вами свяжется специалист. Спокойно, без давления.' },
+            { icon: '🔔', title: 'Шаг 2: Мы перезвоним', text: 'В течение нескольких часов с вами свяжется специалист. Спокойно, без давления.' },
             { icon: '🤲', title: 'Шаг 3: Подберём программу', text: 'Вместе определим, что подходит именно вам. Начнём с первого шага — вместе.' }
         ]
     };
 
-    /**
-     * Отрисовать игру-карусель в конкретном контейнере.
-     * @param {HTMLElement} gameEl — .game[data-game="services|trust|help"]
-     */
+    // FIX: реестр для сброса «3 клика» при повторном открытии модалки
+    const registry = new WeakMap(); // gameEl -> reset()
+
     function renderGame(gameEl) {
         const key = gameEl.dataset.game;
         const steps = GAMES[key];
@@ -47,7 +46,6 @@
             const s = steps[current];
             const isLast = current === steps.length - 1;
 
-            // FIX: на последнем шаге оставлена только кнопка "Закрыть" (без "Позвонить" и "Оставить номер")
             stage.innerHTML = `
             <div class="game__step">
                 <span class="game__icon" aria-hidden="true">${s.icon}</span>
@@ -74,8 +72,26 @@
             }
         });
 
+        function reset() {
+            current = 0;
+            render();
+        }
+
+        registry.set(gameEl, reset);
         render();
     }
 
+    /**
+     * FIX: сброс карусели «3 клика» по её контейнеру.
+     * @param {HTMLElement} gameEl
+     */
+    function resetGame(gameEl) {
+        const fn = registry.get(gameEl);
+        if (fn) fn();
+    }
+
     document.querySelectorAll('[data-game]:not([data-game^="tool-"])').forEach(renderGame);
+
+    window.NP = window.NP || {};
+    NP.resetGame = resetGame;
 })();

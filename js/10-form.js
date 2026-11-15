@@ -5,10 +5,24 @@
 (function () {
     'use strict';
 
+    const ROLE_LABELS = {
+        dependent: 'Зависимый',
+        relative: 'Родственник',
+        friend: 'Друг'
+    };
+
     /* ---------- Маска телефона ---------- */
     const phoneInput = document.getElementById('phone');
     if (phoneInput) {
         phoneInput.addEventListener('input', function (e) {
+            if (e.inputType === 'deleteContentBackward') {
+                const digits = e.target.value.replace(/\D/g, '');
+                if (!digits || digits === '7') {
+                    e.target.value = '';
+                    return;
+                }
+            }
+
             let value = e.target.value.replace(/\D/g, '');
             if (value.startsWith('8')) value = '7' + value.slice(1);
             if (!value.startsWith('7')) value = '7' + value;
@@ -49,6 +63,7 @@
 
         document.querySelectorAll('.form__error').forEach(el => el.textContent = '');
         document.querySelectorAll('.form__input').forEach(el => el.classList.remove('error'));
+        document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(el => el.classList.remove('error'));
 
         // Honeypot
         const honey = document.getElementById('website');
@@ -56,29 +71,33 @@
 
         let isValid = true;
 
-        const phone = document.getElementById('phone').value.replace(/\D/g, '');
+        const phoneEl = document.getElementById('phone');
+        const phone = phoneEl.value.replace(/\D/g, '');
         if (phone.length !== 11) {
             document.getElementById('phoneError').textContent = 'Введите корректный номер телефона';
-            document.getElementById('phone').classList.add('error');
+            phoneEl.classList.add('error');
             isValid = false;
         }
 
         const role = document.querySelector('input[name="role"]:checked');
         if (!role) {
             document.getElementById('roleError').textContent = 'Пожалуйста, выберите кто вы';
+            document.querySelectorAll('input[name="role"]').forEach(el => el.classList.add('error'));
             isValid = false;
         }
 
         const consent = document.getElementById('consent');
         if (consent && !consent.checked) {
             document.getElementById('consentError').textContent = 'Необходимо согласие на обработку данных';
+            consent.classList.add('error');
             isValid = false;
         }
 
-        const captchaValue = parseInt(document.getElementById('captcha').value, 10);
+        const captchaEl = document.getElementById('captcha');
+        const captchaValue = parseInt(captchaEl.value, 10);
         if (captchaValue !== captchaAnswer) {
             document.getElementById('captchaError').textContent = 'Неверный ответ. Попробуйте ещё раз.';
-            document.getElementById('captcha').classList.add('error');
+            captchaEl.classList.add('error');
             generateCaptcha();
             isValid = false;
         }
@@ -91,29 +110,45 @@
         try {
             const formData = new FormData(form);
             const roleValue = formData.get('role');
-            const roleText = { dependent: 'Зависимый', relative: 'Родственник', friend: 'Друг' };
-            formData.set('role', roleText[roleValue] || roleValue);
-            formData.set('phone', document.getElementById('phone').value);
+            formData.set('role', ROLE_LABELS[roleValue] || roleValue);
+            // FIX: не отправляем служебные поля в письмо
+            formData.delete('website');
+            formData.delete('captcha');
 
-            const response = await fetch('https://formsubmit.co/ajax/repair-service-sev@mail.ru', {
-                method: 'POST',
-                headers: { 'Accept': 'application/json' },
-                body: formData
-            });
+            // FIX: таймаут запроса, чтобы кнопка не висела вечно
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-            if (response.ok) {
-                form.hidden = true;
-                if (successMessage) successMessage.hidden = false;
-            } else {
-                throw new Error('network');
+            let response;
+            try {
+                response = await fetch('https://formsubmit.co/ajax/repair-service-sev@mail.ru', {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: formData,
+                    signal: controller.signal
+                });
+            } finally {
+                clearTimeout(timeoutId);
             }
+
+            if (!response.ok) throw new Error('network');
+
+            let data = null;
+            try { data = await response.json(); } catch (_) { /* тело не JSON — считаем ok */ }
+            if (data && String(data.success) !== 'true') {
+                throw new Error('formsubmit rejected');
+            }
+
+            form.hidden = true;
+            if (successMessage) successMessage.hidden = false;
         } catch (err) {
-            // FIX: fallback берёт роль из выбранного radio, а не из DOM-nextSibling
+            // FIX: честный fallback — не притворяемся, что всё отправлено
             const name = (document.getElementById('name') || {}).value || 'Не указано';
-            const phoneFormatted = document.getElementById('phone').value;
+            const phoneFormatted = phoneEl.value;
             const roleChecked = document.querySelector('input[name="role"]:checked');
-            const roleMap = { dependent: 'Зависимый', relative: 'Родственник', friend: 'Друг' };
-            const roleTextFallback = roleChecked ? (roleMap[roleChecked.value] || roleChecked.value) : 'Не указано';
+            const roleTextFallback = roleChecked
+                ? (ROLE_LABELS[roleChecked.value] || roleChecked.value)
+                : 'Не указано';
             const comment = (document.getElementById('comment') || {}).value || 'Не указано';
 
             const subject = encodeURIComponent('Новая заявка с сайта Новый Путь');
@@ -121,9 +156,21 @@
                 `Имя: ${name}\nТелефон: ${phoneFormatted}\nКто: ${roleTextFallback}\nКомментарий: ${comment}`
             );
 
-            window.location.href = `mailto:repair-service-sev@mail.ru?subject=${subject}&body=${body}`;
             submitBtn.disabled = false;
             submitBtn.textContent = 'Перезвоните мне';
+
+            // Показываем пользователю выбор: почта или звонок
+            const errBox = document.getElementById('phoneError');
+            if (errBox) {
+                errBox.textContent = 'Не удалось отправить автоматически. Откройте почту или позвоните: 8 (978) 958-11-88';
+                errBox.style.color = 'var(--color-error)';
+            }
+
+            // Открываем mailto только если пользователь явно согласится —
+            // через диалог confirm (без потери данных)
+            if (window.confirm('Автоматическая отправка не удалась. Открыть почтовый клиент, чтобы отправить заявку вручную?')) {
+                window.location.href = `mailto:repair-service-sev@mail.ru?subject=${subject}&body=${body}`;
+            }
         }
     });
 })();

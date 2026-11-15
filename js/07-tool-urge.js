@@ -59,6 +59,16 @@
                     </div>`;
                 const choices = el.querySelectorAll('.tool-choice');
                 const nextBtn = el.querySelector('[data-act="next"]');
+
+                // FIX: восстанавливаем выбор при возврате на шаг
+                const saved = api.state.data.body;
+                if (saved) {
+                    choices.forEach(c => {
+                        if (c.dataset.body === saved) c.classList.add('is-selected');
+                    });
+                    nextBtn.disabled = false;
+                }
+
                 choices.forEach(c => c.addEventListener('click', () => {
                     choices.forEach(x => x.classList.remove('is-selected'));
                     c.classList.add('is-selected');
@@ -96,13 +106,13 @@
                     started = true;
                     startBtn.disabled = true;
                     startBtn.textContent = 'Идёт наблюдение…';
-                    let left = 15;
+                    // FIX: отсчёт по реальному времени, а не по тикам (throttling вкладки)
+                    const end = Date.now() + 15000;
                     status.textContent = 'Наблюдайте…';
-                    count.textContent = left + ' с';
+                    count.textContent = '15 с';
 
-                    // FIX: сохраняем таймер глобально, чтобы 03-modal.js мог очистить
                     NP.urgeTimer = setInterval(() => {
-                        left--;
+                        const left = Math.max(0, Math.ceil((end - Date.now()) / 1000));
                         count.textContent = left + ' с';
                         if (left <= 0) {
                             clearInterval(NP.urgeTimer);
@@ -113,7 +123,7 @@
                             nextBtn.disabled = false;
                             nextBtn.focus();
                         }
-                    }, 1000);
+                    }, 250);
                 }
 
                 startBtn.addEventListener('click', startTimer);

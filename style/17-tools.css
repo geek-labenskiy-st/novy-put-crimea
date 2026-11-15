@@ -69,7 +69,7 @@
 
 .tool-choice.is-selected {
     border-color: var(--season-primary);
-    background: rgba(90, 138, 106, 0.1);
+    background: color-mix(in srgb, var(--season-primary) 12%, transparent);
 }
 
 .tool-choice__icon {
@@ -177,4 +177,8 @@
     .game__step-title {
         font-size: 1.1rem;
     }
+}
+
+.tool-result__story {
+    margin-top: var(--space-sm);
 }

@@ -19,6 +19,7 @@
         { key: 'habit', icon: '🔁', label: 'Привычные места и время (ритуалы)' }
     ];
 
+    // FIX: используем NP.escapeHtml напрямую, локальный алиас не нужен
     const esc = (s) => (window.NP && NP.escapeHtml) ? NP.escapeHtml(s) : String(s);
 
     const steps = [
@@ -85,7 +86,7 @@
                     <div class="tool-result">
                         <strong>Ваши триггеры:</strong>
                         <ul>${labels.map(o => `<li>${o.icon} ${esc(o.label)}</li>`).join('')}</ul>
-                        ${api.state.data.story ? `<p style="margin-top:12px;"><strong>Ваш случай:</strong> ${esc(api.state.data.story)}</p>` : ''}
+                        ${api.state.data.story ? `<p class="tool-result__story"><strong>Ваш случай:</strong> ${esc(api.state.data.story)}</p>` : ''}
                     </div>
                     <p class="game__step-text">Для каждого триггера можно заранее придумать <strong>план Б</strong> — что вы сделаете вместо привычного действия.</p>
                     <div class="game__nav">

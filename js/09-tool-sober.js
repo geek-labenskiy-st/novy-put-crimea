@@ -63,6 +63,8 @@
                     { name: 'Задержка', text: 'Задержка', cls: 'is-hold', dur: 2000 },
                     { name: 'Выдох', text: 'Выдох', cls: 'is-exhale', dur: 6000 }
                 ];
+                // FIX: конец текущей фазы по реальному времени
+                let phaseEnd = 0;
 
                 function runPhase() {
                     const p = phases[phase];
@@ -70,8 +72,17 @@
                     circle.textContent = p.text;
                     status.textContent = p.name;
                     count.textContent = `Цикл ${Math.min(cycle + 1, 3)} из 3`;
+                    phaseEnd = Date.now() + p.dur;
 
                     NP.breathTimer = setTimeout(() => {
+                        // FIX: если вкладка была в фоне — догоняем пропущенные фазы
+                        const now = Date.now();
+                        if (now < phaseEnd) {
+                            // ещё не пора — перезапускаем на остаток
+                            NP.breathTimer = setTimeout(arguments.callee, phaseEnd - now);
+                            return;
+                        }
+
                         phase++;
                         if (phase >= phases.length) {
                             phase = 0;
@@ -81,8 +92,7 @@
                                 circle.className = 'breath-circle';
                                 circle.textContent = '✓';
                                 count.textContent = '';
-                                api.state.data.done = true;
-                                setTimeout(() => api.next(), 600);
+                                NP.breathTimer = setTimeout(() => api.next(), 600);
                                 return;
                             }
                         }
@@ -90,7 +100,7 @@
                     }, p.dur);
                 }
 
-                setTimeout(runPhase, 400);
+                NP.breathTimer = setTimeout(runPhase, 400);
 
                 el.querySelector('[data-act="stop"]').addEventListener('click', () => {
                     if (NP.breathTimer) { clearTimeout(NP.breathTimer); NP.breathTimer = null; }

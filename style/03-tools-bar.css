@@ -6,9 +6,11 @@
     border-bottom: 1px solid var(--color-border);
     padding: var(--space-xs) 0;
     box-shadow: var(--shadow-sm);
+    background: var(--color-bg-alt); /* fallback для старых браузеров */
     background: linear-gradient(135deg,
             color-mix(in srgb, var(--season-primary) 8%, var(--color-white)) 0%,
             color-mix(in srgb, var(--season-accent) 10%, var(--color-white)) 100%);
+    border-bottom-color: var(--color-border); /* fallback */
     border-bottom-color: color-mix(in srgb, var(--season-primary) 20%, transparent);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -105,6 +107,10 @@
 }
 
 @media (max-width: 640px) {
+    html {
+        scroll-padding-top: calc(var(--header-h) + 56px);
+    }
+
     .tools-bar {
         padding: var(--space-xs) 0;
     }

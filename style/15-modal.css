@@ -29,8 +29,8 @@
     box-shadow: var(--shadow-lg);
     width: 100%;
     max-width: 560px;
-    max-height: 90dvh;
     max-height: 90vh;
+    max-height: 90dvh;
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
@@ -140,4 +140,29 @@
 .legal-content p {
     margin-bottom: var(--space-sm);
     color: var(--color-text-muted);
+}
+
+/* FIX: мобильные правила модалок перенесены сюда из 07-cards.css */
+@media (max-width: 480px) {
+    .modal[open] {
+        padding: var(--space-xs);
+    }
+
+    .modal__inner {
+        padding: var(--space-lg) var(--space-md);
+        max-height: 92vh;
+        max-height: 92dvh;
+    }
+
+    .modal__title {
+        font-size: 1.25rem;
+    }
+
+    .modal__header {
+        margin-bottom: var(--space-md);
+    }
+
+    .modal__body {
+        font-size: 0.95rem;
+    }
 }

@@ -63,7 +63,7 @@
         const api = {
             render,
             go,
-            // FIX: сброс к первому шагу + чистые data
+            // сброс к первому шагу + чистые data + глобальные таймеры
             reset() {
                 if (window.NP && NP.breathTimer) { clearTimeout(NP.breathTimer); NP.breathTimer = null; }
                 if (window.NP && NP.urgeTimer) { clearInterval(NP.urgeTimer); NP.urgeTimer = null; }
@@ -79,7 +79,7 @@
     }
 
     /**
-     * FIX: сбросить тренажёр по его контейнеру.
+     * Сбросить тренажёр по его контейнеру.
      * @param {HTMLElement} gameEl
      */
     function resetTool(gameEl) {

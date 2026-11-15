@@ -16,18 +16,7 @@
     border-radius: 32px 32px 0 0;
 }
 
-.section--alt-b {
-    background: var(--season-bg-soft);
-    border-radius: 32px;
-    margin: var(--space-sm) 0;
-}
-
-@media (max-width: 768px) {
-    .section--alt-b {
-        border-radius: 20px;
-        margin: var(--space-xs) 0;
-    }
-}
+/* FIX: .section--alt-b удалён — не используется в HTML */
 
 .section__title {
     font-size: 2rem;
@@ -62,16 +51,4 @@
         margin-bottom: var(--space-xl);
         padding: 0 var(--space-xs);
     }
-}
-
-/* ===== FIX: .section__cta — отступ снизу (как и сверху), кроме последнего элемента ===== */
-.section__cta {
-    text-align: center;
-    margin-top: var(--space-2xl);
-    margin-bottom: var(--space-2xl);
-}
-
-.section__cta:last-child,
-.section>.container>.section__cta:last-child {
-    margin-bottom: 0;
 }
