@@ -45,7 +45,7 @@
     --section-pad-y-md: var(--space-3xl);
     --section-pad-y-lg: var(--space-4xl);
 
-    /* Высота sticky-шапки */
+    /* Высота sticky-шапки (по умолчанию — десктоп) */
     --header-h: 66px;
 
     /* Сезонные переменные (по умолчанию лето) */
@@ -91,7 +91,7 @@ html[data-season="autumn"] {
 /* ===== САЙФ-ЗОНЫ iOS ===== */
 @supports (padding-top: env(safe-area-inset-top)) {
     .header {
-        padding-top: calc(var(--space-sm) + env(safe-area-inset-top));
+        padding-top: calc(var(--space-xs) + env(safe-area-inset-top));
     }
 
     .footer {
@@ -120,6 +120,7 @@ html {
 @media (max-width: 480px) {
     html {
         font-size: 16px;
+        scroll-padding-top: calc(var(--header-h) + 56px);
     }
 }
 

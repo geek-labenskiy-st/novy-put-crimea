@@ -1,7 +1,7 @@
 /* ===== HERO ===== */
 .hero {
     position: relative;
-    padding: var(--section-pad-y) 0 calc(var(--section-pad-y) + var(--space-xl));
+    padding: var(--space-2xl) 0 calc(var(--section-pad-y) + var(--space-xl));
     text-align: center;
     overflow: hidden;
     isolation: isolate;
@@ -203,9 +203,15 @@
     }
 }
 
+@media (max-width: 640px) {
+    .hero {
+        padding: var(--space-xl) 0 calc(var(--space-2xl) + var(--space-md));
+    }
+}
+
 @media (max-width: 480px) {
     .hero {
-        padding: var(--section-pad-y) 0 calc(var(--section-pad-y) + var(--space-md));
+        padding: var(--space-lg) 0 calc(var(--space-xl) + var(--space-md));
         min-height: auto;
     }
 

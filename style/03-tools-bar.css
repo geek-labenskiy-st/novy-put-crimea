@@ -1,10 +1,9 @@
-/* ===== TOOLS BAR (под шапкой) ===== */
+/* ===== TOOLS BAR (под шапкой, в потоке) ===== */
 .tools-bar {
-    position: sticky;
-    top: var(--header-h);
+    position: relative;
     z-index: 990;
     border-bottom: 1px solid var(--color-border);
-    padding: var(--space-2xs) 0;
+    padding: 6px 0;
     box-shadow: var(--shadow-sm);
     background: var(--color-bg-alt);
     background: linear-gradient(135deg,
@@ -28,7 +27,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-2xs);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
     color: var(--color-text-muted);
     white-space: nowrap;
@@ -47,13 +46,14 @@
     flex-wrap: nowrap;
     justify-content: center;
     min-width: 0;
+    width: 100%;
 }
 
 .tools-bar__btn {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-2xs);
-    padding: var(--space-xs) 12px;
+    gap: 6px;
+    padding: 6px 12px;
     background: var(--color-white);
     border: 1.5px solid var(--color-border);
     border-color: color-mix(in srgb, var(--season-primary) 30%, transparent);
@@ -63,7 +63,7 @@
     font-family: inherit;
     color: var(--color-text);
     text-align: left;
-    min-height: 44px;
+    min-height: 40px;
     box-shadow: 0 1px 4px rgba(45, 58, 46, 0.06);
     flex: 1 1 0;
     min-width: 0;
@@ -85,7 +85,7 @@
 }
 
 .tools-bar__btn-icon {
-    font-size: 1.1rem;
+    font-size: 1rem;
     line-height: 1;
     flex-shrink: 0;
 }
@@ -99,7 +99,7 @@
 }
 
 .tools-bar__btn-title {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 700;
     white-space: nowrap;
     overflow: hidden;
@@ -107,7 +107,7 @@
 }
 
 .tools-bar__btn-sub {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     color: var(--color-text-muted);
     transition: color var(--transition);
     white-space: nowrap;
@@ -117,11 +117,11 @@
 
 @media (max-width: 640px) {
     html {
-        scroll-padding-top: calc(var(--header-h) + 52px);
+        scroll-padding-top: calc(var(--header-h) + 54px);
     }
 
     .tools-bar {
-        padding: var(--space-2xs) 0;
+        padding: 5px 0;
     }
 
     .tools-bar__label {
@@ -130,23 +130,24 @@
 
     .tools-bar__buttons {
         width: 100%;
-        gap: var(--space-2xs);
+        gap: 4px;
     }
 
     .tools-bar__btn {
         flex: 1 1 0;
         min-width: 0;
-        padding: 6px 8px;
+        padding: 4px 6px;
         gap: 4px;
         justify-content: center;
+        min-height: 38px;
     }
 
     .tools-bar__btn-icon {
-        font-size: 1rem;
+        font-size: 0.95rem;
     }
 
     .tools-bar__btn-title {
-        font-size: 0.72rem;
+        font-size: 0.7rem;
     }
 
     .tools-bar__btn-sub {
@@ -157,24 +158,24 @@
 @media (max-width: 400px) {
     .tools-bar__btn {
         flex: 1 1 0;
-        padding: 6px 4px;
+        padding: 4px 4px;
     }
 
     .tools-bar__btn-title {
-        font-size: 0.68rem;
+        font-size: 0.65rem;
     }
 
     .tools-bar__btn-icon {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
     }
 }
 
 @media (max-width: 360px) {
     .tools-bar__btn-title {
-        font-size: 0.64rem;
+        font-size: 0.62rem;
     }
 
     .tools-bar__btn-icon {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
 }

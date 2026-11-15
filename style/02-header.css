@@ -239,8 +239,10 @@
         gap: var(--space-2xs);
     }
 
+    /* ВАЖНО: увеличиваем высоту шапки на мобиле,
+       чтобы tools-bar не наезжал */
     :root {
-        --header-h: 58px;
+        --header-h: 68px;
     }
 }
 
@@ -264,5 +266,9 @@
 
     .header__logo-icon {
         font-size: 1.3rem;
+    }
+
+    :root {
+        --header-h: 64px;
     }
 }
